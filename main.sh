@@ -78,7 +78,7 @@ sysctl_Optimization(){
 swap_add(){
     if [ ! -f "/root/swap.sh" ]; then
         yellow "没发现脚本，执行下载脚本...."
-        wget -o "/root/swap.sh" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/swap.sh"
+        wget -O "/root/swap.sh" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/swap.sh"
         chomd +x "/root/swap.sh"
         green "下载完成，开始执行增加虚拟内存"
     fi
