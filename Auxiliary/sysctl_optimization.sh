@@ -94,3 +94,17 @@ net.ipv4.tcp_tw_reuse=1
 EOT
 
 sysctl -p
+if ping6 -c 1 -w 1 google.com &> /dev/null; then
+  echo "IPv6 支持. 增加谷歌地址解析。"
+  IPV6_ENTRIES="2404:6800:4008:c06::be scholar.google.com
+2404:6800:4008:c06::be scholar.google.com.hk
+2404:6800:4008:c06::be scholar.google.com.tw
+2401:3800:4001:10::101f scholar.google.cn #www.google.cn
+2404:6800:4008:c06::be scholar.google.com.sg
+2404:6800:4008:c06::be scholar.l.google.com
+2404:6800:4008:803::2001 scholar.googleusercontent.com"
+  echo "$IPV6_ENTRIES" | sudo tee -a /etc/hosts > /dev/null
+  echo "谷歌解析地址添加完毕。"
+else
+  echo "ipv6不支持，暂不添加解析地址"
+fi
