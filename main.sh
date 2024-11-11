@@ -15,25 +15,26 @@ blue(){
     echo -e "\033[34m\033[01m$1\033[0m"
 }
 
-
-#检查相应组件是否安装
+# 检查相应组件是否安装
 check_system(){
-    if [ ! -f "/usr/bin/sudo"]; then
+    if [ ! -f "/usr/bin/sudo" ]; then
         apt install -y sudo
     fi
-    if [ ! -f "/usr/bin/wget"]; then
+    if [ ! -f "/usr/bin/wget" ]; then
         apt install -y wget
     fi
     if ! command -v curl &> /dev/null; then
         apt install -y curl
+    fi
     green "相应组件已安装。"
 }
-#系统参数优化
+
+# 系统参数优化
 sysctl_check(){
     if [ -f /etc/debian_version ]; then
         echo "检测到Debian系统。"
     else
-        echo "非Debian系统，终止操作！。"
+        echo "非Debian系统，终止操作！"
         exit 1
     fi
     VERSION_CODENAME=$(grep VERSION_CODENAME /etc/os-release | cut -d'=' -f2)
@@ -48,10 +49,10 @@ sysctl_check(){
         esac
     fi
     echo "检测到 Debian 版本代号：$VERSION_CODENAME"
-    #备份现有的sources.list文件
+    # 备份现有的sources.list文件
     cp /etc/apt/sources.list /etc/apt/sources.list.bak
     echo "已完成备份sources.list文件"
-    #更新sources.list
+    # 更新sources.list
     cat <<EOF > /etc/apt/sources.list
 deb http://deb.debian.org/debian $VERSION_CODENAME main contrib non-free
 deb-src http://deb.debian.org/debian $VERSION_CODENAME main contrib non-free
@@ -64,46 +65,52 @@ EOF
     echo "已经更新 $VERSION_CODENAME 版本的源"
     apt update -y 
 }
-#优化参数
+
+# 优化参数
 sysctl_Optimization(){
     if [ ! -f "/root/sysctl_optimization.sh" ]; then
         yellow "未找到参数优化文件，正在开始下载参数优化脚本。"
         wget -O "/root/sysctl_optimization.sh" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/sysctl_optimization.sh"
-        chomd +x "/root/sysctl_optimization.sh"
+        chmod +x "/root/sysctl_optimization.sh"
         green "参数优化文件下载完成，开始执行系统优化......"
     fi
     bash "/root/sysctl_optimization.sh"
 }
-#增加虚拟内存
+
+# 增加虚拟内存
 swap_add(){
     if [ ! -f "/root/swap.sh" ]; then
-        yellow "没发现脚本，执行下载脚本...."
+        yellow "未发现脚本，执行下载脚本...."
         wget -O "/root/swap.sh" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/swap.sh"
-        chomd +x "/root/swap.sh"
+        chmod +x "/root/swap.sh"
         green "下载完成，开始执行增加虚拟内存"
     fi
     bash "/root/swap.sh"
 }
-#开启root
+
+# 开启root
 root_add(){
     if [ ! -f "/root/ssh_root" ]; then
-        yellow "没发现脚本，执行下载脚本...."
-        wget -o "/root/ssh_root" "https://raw.githubusercontent.com/pulicajexa/test/refs/heads/main/main/ssh_root.sh"
-        chomd +x "/root/ssh_root"
+        yellow "未发现脚本，执行下载脚本...."
+        wget -O "/root/ssh_root" "https://raw.githubusercontent.com/pulicajexa/test/refs/heads/main/main/ssh_root.sh"
+        chmod +x "/root/ssh_root"
         green "下载完成，开启root...."
     fi
     bash "/root/ssh_root"
 }
-#添加warp脚本
+
+# 添加warp脚本
 install_warp() {
     green "开始安装warp"
     if [ ! -f "/root/menu.sh" ]; then
         green "检查到root文件夹下没有menu.sh文件，开始下载"
-        wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh && bash menu.sh
+        wget -N https://gitlab.com/fscarmen/warp/-/raw/main/menu.sh -O /root/menu.sh && bash /root/menu.sh
+    else
+        bash /root/menu.sh
     fi
 }
 
-#主菜单
+# 主菜单
 main_menu() {
     green "====================================="
     green " 欢迎使用one的一键脚本"
@@ -117,24 +124,24 @@ main_menu() {
     green " 0.退出脚本"
     read -r -p "请输入数字:" num
     case "$num" in
-    1)
-        root_add
-        ;;
-    2)
-        swap_add
-        ;;
-    3)  
-        install_warp
-        ;;
-    0)
-        exit 1
-        ;;
-    *)
-        clear
-        red "请输入正确数字"
-        sleep 1s
-        main_menu
-        ;;
+        1)
+            root_add
+            ;;
+        2)
+            swap_add
+            ;;
+        3)  
+            install_warp
+            ;;
+        0)
+            exit 1
+            ;;
+        *)
+            clear
+            red "请输入正确数字"
+            sleep 1s
+            main_menu
+            ;;
     esac
 }
 
