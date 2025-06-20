@@ -77,6 +77,17 @@ sysctl_Optimization(){
     bash "/root/sysctl_optimization.sh"
 }
 
+# gcore优化参数
+sysctl_gcore(){
+    if [ ! -f "/root/sysctl_gcore" ]; then
+        yellow "未找到参数优化文件，正在开始下载参数优化脚本。"
+        wget -O "/root/sysctl_gcore" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/sysctl_gcore.sh"
+        chmod +x "/root/sysctl_gcore.sh"
+        green "参数优化文件下载完成，开始执行系统优化......"
+    fi
+    bash "/root/sysctl_gcore.sh"
+}
+
 # 增加虚拟内存
 swap_add(){
     if [ ! -f "/root/swap.sh" ]; then
@@ -121,6 +132,7 @@ main_menu() {
     green " 1.设置root密码"
     green " 2.增加虚拟内存"
     green " 3.添加warp"
+    green " 4.gcore优化"
     green " 0.退出脚本"
     read -r -p "请输入数字:" num
     case "$num" in
