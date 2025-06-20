@@ -160,5 +160,4 @@ main_menu() {
 # 脚本开始
 sysctl_check
 check_system
-sysctl_Optimization
 main_menu
