@@ -79,9 +79,9 @@ sysctl_Optimization(){
 
 # gcore优化参数
 sysctl_gcore(){
-    if [ ! -f "/root/sysctl_gcore" ]; then
+    if [ ! -f "/root/sysctl_gcore.sh" ]; then
         yellow "未找到参数优化文件，正在开始下载参数优化脚本。"
-        wget -O "/root/sysctl_gcore" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/sysctl_gcore.sh"
+        wget -O "/root/sysctl_gcore.sh" "https://raw.githubusercontent.com/pulicajexa/myshell/refs/heads/main/Auxiliary/sysctl_gcore.sh"
         chmod +x "/root/sysctl_gcore.sh"
         green "参数优化文件下载完成，开始执行系统优化......"
     fi
@@ -144,6 +144,9 @@ main_menu() {
             ;;
         3)  
             install_warp
+            ;;
+        4)
+            sysctl_gcore
             ;;
         0)
             exit 1
